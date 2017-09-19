@@ -8,6 +8,9 @@ echo ""
 echo "================ $(date) ================"
 echo ""
 
+source $HOME/.gpg-agent-info
+export GPG_AGENT_INFO
+
 INCOMING=$1
 CODENAME=trusty
 
@@ -27,8 +30,14 @@ fi
 
 for f in $INCOMING/*.deb; do
     echo "Processing $f"
-    reprepro -Vb . includedeb $CODENAME $f
-    rm  $f
+    echo reprepro --ask-passphrase -Vb . includedeb $CODENAME $f
+    reprepro --ask-passphrase -Vb . includedeb $CODENAME $f
+    retcode=$?
+    if [[ $retcode != 0 ]]; then
+        echo "Return code $retcode"
+    else
+        rm $f
+    fi
     echo "Processing $f done"
 done
 echo "All done"
