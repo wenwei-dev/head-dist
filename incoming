@@ -4,6 +4,10 @@
 # */1 * *  *  * /usr/local/bin/incoming /var/www/apt-repo/incoming
 #
 
+echo ""
+echo "================ $(date) ================"
+echo ""
+
 INCOMING=$1
 CODENAME=trusty
 
@@ -25,4 +29,6 @@ for f in $INCOMING/*.deb; do
     echo "Processing $f"
     reprepro -Vb . includedeb $CODENAME $f
     rm  $f
+    echo "Processing $f done"
 done
+echo "All done"
