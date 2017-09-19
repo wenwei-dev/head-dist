@@ -29,15 +29,19 @@ if [[ $found == 0 ]]; then
 fi
 
 for f in $INCOMING/*.deb; do
-    echo "Processing $f"
-    echo reprepro --ask-passphrase -Vb . includedeb $CODENAME $f
-    reprepro --ask-passphrase -Vb . includedeb $CODENAME $f
-    retcode=$?
-    if [[ $retcode != 0 ]]; then
-        echo "Return code $retcode"
+    if dpkg -c $f >/dev/null 2>&1; then
+        echo "Processing $f"
+        echo reprepro --ask-passphrase -Vb . includedeb $CODENAME $f
+        reprepro --ask-passphrase -Vb . includedeb $CODENAME $f
+        retcode=$?
+        if [[ $retcode != 0 ]]; then
+            echo "Return code $retcode"
+        else
+            rm $f
+        fi
+        echo "Processing $f done"
     else
-        rm $f
+        echo "$f is not Debian package or is broken"
     fi
-    echo "Processing $f done"
 done
 echo "All done"
