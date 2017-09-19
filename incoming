@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 #
 # add this to crontab
-# */1 * *  *  * /var/www/apt-repo/incoming /usr/local/bin/incoming
+# */1 * *  *  * /usr/local/bin/incoming /var/www/apt-repo/incoming
 #
 
-BASEDIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
 INCOMING=$1
 CODENAME=trusty
 
-cd $BASEDIR
+cd /var/www/apt-repo
 found=0
 for f in $INCOMING/*.deb; do
     if [ -e $f ]; then
