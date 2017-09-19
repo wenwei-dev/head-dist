@@ -1,0 +1,7 @@
+Origin: https://github.com/hansonrobotics
+Label: HEAD repository
+Codename: trusty
+Architectures: amd64
+Components: main
+Description: HEAD Debian packages
+SignWith: yes

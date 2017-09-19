@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#
+# add this to crontab
+# */1 * *  *  * /var/www/apt-repo/incoming /usr/local/bin/incoming
+#
+
+BASEDIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+INCOMING=$1
+CODENAME=trusty
+
+cd $BASEDIR
+found=0
+for f in $INCOMING/*.deb; do
+    if [ -e $f ]; then
+        found=1
+        break
+    fi
+done
+
+if [[ $found == 0 ]]; then
+    echo "Nothing to do"
+    exit
+fi
+
+for f in $INCOMING/*.deb; do
+    echo "Processing $f"
+    reprepro -Vb . includedeb $CODENAME $f
+    rm  $f
+done
